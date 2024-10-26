@@ -1,6 +1,6 @@
-import * as vision from "@google-cloud/vision";
-import { promises as fs } from "fs";
-import path from "path";
+import * as vision from "@google-cloud/vision"
+import { promises as fs } from "fs"
+import path from "path"
 
 /**
  * Class for annotating images using Google Cloud Vision API.
@@ -9,9 +9,9 @@ import path from "path";
  * directory, process them for text detection, and save the annotations in JSON format to an output directory.
  */
 class ImageAnnotator {
-  private client: vision.ImageAnnotatorClient;
-  private imgfPath: string;
-  private outfPath: string;
+  private client: vision.ImageAnnotatorClient
+  private imgfPath: string
+  private outfPath: string
 
   /**
    * Creates an instance of ImageAnnotator.
@@ -20,9 +20,9 @@ class ImageAnnotator {
    * @param outfPath - The file path to the directory where annotation results will be saved.
    */
   constructor(imgfPath: string, outfPath: string) {
-    this.client = new vision.ImageAnnotatorClient();
-    this.imgfPath = imgfPath;
-    this.outfPath = outfPath;
+    this.client = new vision.ImageAnnotatorClient()
+    this.imgfPath = imgfPath
+    this.outfPath = outfPath
   }
 
   /**
@@ -35,15 +35,15 @@ class ImageAnnotator {
    */
   public async getAnnotations(): Promise<void> {
     try {
-      const files = await this.readFiles();
+      const files = await this.readFiles()
 
       for (const file of files) {
         if (this.checkImage(file)) {
-          await this.processFile(file);
+          await this.processFile(file)
         }
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
@@ -54,10 +54,10 @@ class ImageAnnotator {
    */
   private async readFiles(): Promise<string[]> {
     try {
-      return await fs.readdir(this.imgfPath);
+      return await fs.readdir(this.imgfPath)
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error(err)
+      throw err
     }
   }
 
@@ -69,13 +69,13 @@ class ImageAnnotator {
    */
   private async processFile(file: string): Promise<void> {
     try {
-      const filePath = path.join(this.imgfPath, file);
-      const [res] = await this.client.textDetection(filePath);
+      const filePath = path.join(this.imgfPath, file)
+      const [res] = await this.client.textDetection(filePath)
 
-      await this.saveAnnotation(file, res);
-      console.log(`Annotation saved for ${file}`);
+      await this.saveAnnotation(file, res)
+      console.log(`Annotation saved for ${file}`)
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
@@ -94,15 +94,15 @@ class ImageAnnotator {
       const jsonFilePath = path.join(
         this.outfPath,
         `${path.basename(file, path.extname(file))}.json`
-      );
+      )
 
       await fs.writeFile(
         jsonFilePath,
         JSON.stringify({ responses: [res] }, null, 2)
-      );
+      )
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error(err)
+      throw err
     }
   }
 
@@ -113,6 +113,6 @@ class ImageAnnotator {
    * @returns {boolean} True if the file is a JPEG image, false otherwise.
    */
   private checkImage(file: string): boolean {
-    return path.extname(file).toLowerCase() === ".jpg";
+    return path.extname(file).toLowerCase() === ".jpg"
   }
 }
