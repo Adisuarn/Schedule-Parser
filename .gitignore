@@ -4,3 +4,5 @@
 /output
 /ServiceToken.json
 
+.vscode/
+.idea/
