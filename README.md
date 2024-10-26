@@ -14,7 +14,7 @@ This project based on Table Parser from [pryter](https://github.com/pryter), and
   4. mkdir images
   5. mkdir resource
   6. put all schedule images (jpg) to created images folder
-  7. get ServiceToken.json (credential) from [Google Cloud Platform](https://cloud.google.com/vision/docs/quickstart-client-libraries)
+  7. get ServiceToken.json (credential) from Google Cloud Vision API
   8. npm run dev
   9. edit json output in output folder
 ```
