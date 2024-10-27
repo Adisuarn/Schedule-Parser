@@ -36,8 +36,10 @@ export class TableParser {
         }else{
             if (data.split("หอง")[1]) {
                 room = data.split("หอง")[1].split("\n")[0].trim()
-            }else{
-                //room = data.split("ทอง")[1].split("\n")[0].trim()
+            } else if (data.split("ทอง")[1]) {
+                room = data.split("ทอง")[1].split("\n")[0].trim()
+            } else if (data.split("หือง")[1]) {
+                room = data.split("หือง")[1].split("\n")[0].trim()
             }
         }
 

@@ -2,7 +2,7 @@
 /images
 /resource
 /output
-/ServiceToken.json
+/credentials.json
 
 .vscode/
 .idea/

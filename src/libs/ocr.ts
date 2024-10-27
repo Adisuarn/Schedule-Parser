@@ -8,7 +8,8 @@ import path from "path"
  * This class initializes an ImageAnnotatorClient and provides methods to read image files from a specified
  * directory, process them for text detection, and save the annotations in JSON format to an output directory.
  */
-class ImageAnnotator {
+
+export class ImageAnnotator {
   private client: vision.ImageAnnotatorClient
   private imgfPath: string
   private outfPath: string
@@ -18,8 +19,10 @@ class ImageAnnotator {
    *
    * @param imgfPath - The file path to the directory containing images to be annotated.
    * @param outfPath - The file path to the directory where annotation results will be saved.
+   * @param credentialsPath - The file path to the Google Cloud credentials JSON file.
    */
-  constructor(imgfPath: string, outfPath: string) {
+  constructor(imgfPath: string, outfPath: string, credentialsPath: string) {
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = credentialsPath
     this.client = new vision.ImageAnnotatorClient()
     this.imgfPath = imgfPath
     this.outfPath = outfPath
