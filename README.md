@@ -6,6 +6,10 @@ Transforming images to json to use in [Schedule Generator Project](https://githu
 
 This project based on Table Parser from [pryter](https://github.com/pryter), and Annotations Generating from [Sodynoizz](https://github.com/Sodynoizz)
 
+## TO-DO
+
+1. Including image optimize / image conversation
+
 ## Setup
 
 ```bash
