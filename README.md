@@ -1,6 +1,6 @@
 # Schedule Parser
 
-Transforming images to json to use in [Schedule Generator Project](https://github.com/triamudomcmc/schedule-generator).
+Transforming images to json to use in [Schedule Generator Project](https://github.com/triamudomcmc/schedule-generator), Converting and Compressing images easily.
 
 ## Infomation
 
