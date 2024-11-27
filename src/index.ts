@@ -97,6 +97,24 @@ async function convertImage() {
 async function convertPdfToImage() { 
   const inputDir = path.join(__dirname, '../pdfs');
   const outputDir = path.join(__dirname, '../images');
+  const pdfToImgConverter = new PdfToImgConverter();
+  try {
+    const isEmpty = await isDirectoryEmpty(outputDir);
+
+    if (isEmpty) {
+      console.log('Image directory is empty. Converting PDFs to images...');
+      const pdfFiles = fs.readdirSync(inputDir).filter(file => file.endsWith('.pdf'));
+
+      for (const pdfFile of pdfFiles) {
+        const pdfPath = path.join(inputDir, pdfFile);
+        await pdfToImgConverter.convertPdfToImg(pdfPath, outputDir);
+      }
+    } else {
+      console.log('Image directory is not empty. Skipping PDF to image conversion...');
+    }
+  } catch (error) {
+    console.error('Error in PDF to image conversion:', error);
+  }
 
 }
 
