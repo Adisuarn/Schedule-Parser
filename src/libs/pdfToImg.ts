@@ -1,58 +1,49 @@
 import fs from 'fs';
-import path, { format } from 'path';
-import { fromPath } from "pdf2pic";
+import path from 'path';
+import { fromPath } from 'pdf2pic';
+import { PDFDocument } from 'pdf-lib'; // Install with `npm install pdf-lib`
 
 export class PdfToImgConverter {
-  private convertApi: any;
-
-  private async convertPdfToImg(pdfPath: string, outputDir: string): Promise<void> {
-    try {
-      const params = this.convertApi.createParams();
-      params.add('File', pdfPath);
-
-      const result = await this.convertApi.convert('pdf', 'jpg', params);
-
-      const imageUrl = result.files[0].Url;
-
-      const response = await fetch(imageUrl);
-      const buffer = Buffer.from(await response.arrayBuffer());
-
-      const fileName = path.basename(pdfPath, '.pdf') + '.jpg';
-      const outputFilePath = path.join(outputDir, fileName);
-
-      const options = {
-        density: 100,
-        saveFilename: fileName,
-        savePath: outputFilePath,
-        format: 'jpg',
-        preserveAspectRatio: true
-      }
-
-
-      fs.writeFileSync(outputFilePath, buffer);
-      console.log(`Converted ${pdfPath} to ${outputFilePath}`);
-    } catch (error) {
-      console.error('Error converting PDF to image:', error);
-    }
+  /**
+   * Gets the total number of pages in a PDF.
+   * @param pdfPath Path to the PDF file.
+   */
+  private async getTotalPages(pdfPath: string): Promise<number> {
+    const pdfBuffer = fs.readFileSync(pdfPath);
+    const pdfDoc = await PDFDocument.load(pdfBuffer);
+    return pdfDoc.getPageCount();
   }
 
-  public async convertAllPdfsInDirectory(inputDir: string, outputDir: string): Promise<void> {
+  /**
+   * Converts a single PDF to images.
+   * @param pdfPath Path of the PDF file.
+   * @param outputDir Directory to save the resulting images.
+   */
+  public async convertPdfToImg(pdfPath: string, outputDir: string): Promise<void> {
     try {
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir);
+      const fileName = path.basename(pdfPath, '.pdf');
+      const options = {
+        //density: 100, // Image resolution (dots per inch)
+        saveFilename: fileName,
+        savePath: outputDir,
+        format: 'jpeg',
+        preserveAspectRatio: true
+      };
+
+      // Initialize the converter with options
+      const converter = fromPath(pdfPath, options);
+
+      // Get total pages using `pdf-lib`
+      const totalPages = await this.getTotalPages(pdfPath);
+
+      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+        const result = await converter(pageNum); // Convert each page
+        console.log(`Page ${pageNum} saved at: ${result.path}`);
       }
 
-      const files = fs.readdirSync(inputDir);
-
-      const pdfFiles = files.filter(file => path.extname(file).toLowerCase() === '.pdf');
-
-      for (let i = 0; i < pdfFiles.length; i++) {
-        // TODO
-      }
-
-      console.log('All PDFs have been converted.');
+      console.log(`Conversion of ${fileName} completed.`);
     } catch (error) {
-      console.error('Error processing the directory:', error);
+      console.error(`Error converting PDF to images for ${pdfPath}:`, error);
     }
   }
 }
