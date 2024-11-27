@@ -1,6 +1,7 @@
 import { ImageAnnotator } from "./libs/ocr";
 import { TableGenerator } from "./libs/tableGenerator";
 import { ImageConvertor } from "./libs/imageConvertor";
+import { PdfToImgConverter } from "./libs/pdfToImg";
 import { isDirectoryEmpty } from "./utils/utils";
 import path from 'path';
 import readline from 'readline';
@@ -93,10 +94,16 @@ async function convertImage() {
   }
 }
 
+async function convertPdfToImage() { 
+  const inputDir = path.join(__dirname, '../pdfs');
+  const outputDir = path.join(__dirname, '../images');
+
+}
+
 async function main() {
   const choice = await askQuestion('1: Generating table, 2: Converting image: ');
-
   if (choice === '1') {
+    await convertPdfToImage();
     await generateTable();
   } else if (choice === '2') {
     await convertImage();
