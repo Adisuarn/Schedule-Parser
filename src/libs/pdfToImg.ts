@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fromPath } from 'pdf2pic';
-import { PDFDocument } from 'pdf-lib'; // Install with `npm install pdf-lib`
+import { PDFDocument } from 'pdf-lib'; 
 
 export class PdfToImgConverter {
   /**
@@ -23,23 +23,19 @@ export class PdfToImgConverter {
     try {
       const fileName = path.basename(pdfPath, '.pdf');
       const options = {
-        //density: 100, // Image resolution (dots per inch)
+        quality: 100,
+        density: 100,
         saveFilename: fileName,
         savePath: outputDir,
-        format: 'jpeg',
-        preserveAspectRatio: true
+        format: 'jpg',
+        width: 3507,
+        height: 2481,
       };
 
-      // Initialize the converter with options
       const converter = fromPath(pdfPath, options);
 
-      // Get total pages using `pdf-lib`
-      const totalPages = await this.getTotalPages(pdfPath);
-
-      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-        const result = await converter(pageNum); // Convert each page
-        console.log(`Page ${pageNum} saved at: ${result.path}`);
-      }
+      const result = await converter(1); // Convert the first page only
+      console.log(`Page 1 saved as: ${result.path}`);
 
       console.log(`Conversion of ${fileName} completed.`);
     } catch (error) {

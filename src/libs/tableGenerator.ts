@@ -65,7 +65,7 @@ export class TableGenerator {
       const fileContent = await fs.readFile(filePath);
       const parser = new TableParser(fileContent, new Config((typeof height === 'number' && typeof width === 'number') ? DefaultConfigs.createCanvas(width, height) : DefaultConfigs.createCanvas(), DefaultConfigs.Anchor));
       const parsedData = parser.parse();
-      const outputFilePath = path.join(this.outputDir, filename);
+      const outputFilePath = path.join(this.outputDir, `${parsedData.meta.room}.json`);
       await fs.writeFile(outputFilePath, JSON.stringify(parsedData, null, 2));
       console.log(`Parsed table for ${filename} saved in ${outputFilePath}`);
     } catch (error) {

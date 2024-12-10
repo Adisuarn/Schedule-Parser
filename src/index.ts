@@ -37,26 +37,26 @@ async function generateTable() {
 
   let TableGeneratorClient: TableGenerator;
 
-  const userResponse = await askQuestion('Do you want to input width (default: 3507px) and height (default: 2481px) for the TableGenerator? (y/n): ');
+  // const userResponse = await askQuestion('Do you want to input width (default: 3507px) and height (default: 2481px) for the TableGenerator? (y/n): ');
 
-  if (userResponse.toLowerCase() === 'y') {
-    const widthInput = await askQuestion('Please enter the width: ');
-    const heightInput = await askQuestion('Please enter the height: ');
+  // if (userResponse.toLowerCase() === 'y') {
+  //   const widthInput = await askQuestion('Please enter the width: ');
+  //   const heightInput = await askQuestion('Please enter the height: ');
 
-    const width = parseInt(widthInput, 10);
-    const height = parseInt(heightInput, 10);
+  //   const width = parseInt(widthInput, 10);
+  //   const height = parseInt(heightInput, 10);
 
-    if (isNaN(width) || isNaN(height)) {
-      console.error('Invalid input. Width and height must be numbers.');
-      process.exit(1);
-    }
-    TableGeneratorClient = new TableGenerator(resourceDir, outputDir, width, height);
-  } else if (userResponse.toLowerCase() === 'n') {
-    TableGeneratorClient = new TableGenerator(resourceDir, outputDir);
-  } else {
-    console.error('Invalid input. Please enter either "y" or "n".');
-    process.exit(1);
-  }
+  //   if (isNaN(width) || isNaN(height)) {
+  //     console.error('Invalid input. Width and height must be numbers.');
+  //     process.exit(1);
+  //   }
+  //   TableGeneratorClient = new TableGenerator(resourceDir, outputDir, width, height);
+  //} else if (userResponse.toLowerCase() === 'n') {
+  TableGeneratorClient = new TableGenerator(resourceDir, outputDir);
+  //} else {
+  //   console.error('Invalid input. Please enter either "y" or "n".');
+  //   process.exit(1);
+  // }
 
   try {
     const isEmpty = await isDirectoryEmpty(resourceDir);
@@ -121,7 +121,7 @@ async function convertPdfToImage() {
 async function main() {
   const choice = await askQuestion('1: Generating table, 2: Converting image: ');
   if (choice === '1') {
-    await convertPdfToImage();
+    //await convertPdfToImage();
     await generateTable();
   } else if (choice === '2') {
     await convertImage();
