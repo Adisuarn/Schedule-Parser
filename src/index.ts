@@ -76,16 +76,25 @@ async function generateTable() {
 
 async function convertImage() {
   const convertedImageDir = path.join(__dirname, '../convertedImages');
+  const outputImageDir = path.join(__dirname, '../outputConverted')
+
+  if (!fs.existsSync(convertedImageDir)) {
+    fs.mkdirSync(convertedImageDir, { recursive: true });
+  }
+  if (!fs.existsSync(outputImageDir)) { 
+    fs.mkdirSync(outputImageDir, { recursive: true });
+  }
 
   const convertImageResponse = await askQuestion('Do you want to convert an image? (y/n): ');
 
   if (convertImageResponse.toLowerCase() === 'y') {
     const inputPath = convertedImageDir;
+    let outputPath = outputImageDir
     const format = await askQuestion('Please enter the format (jpg/png): ') as 'jpg' | 'png';
     const compressResponse = await askQuestion('Do you want to compress the image? (y/n): ');
     const compress = compressResponse.toLowerCase() === 'y';
 
-    const outputPath = inputPath.replace(/\.[^/.]+$/, `.${format}`);
+    outputPath = outputPath.replace(/\.[^/.]+$/, `.${format}`);
 
     const imageConvertor = new ImageConvertor(inputPath, outputPath, format, compress);
     await imageConvertor.convert();
